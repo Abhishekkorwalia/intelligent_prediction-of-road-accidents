@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Accident Severity Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">🚗 Road Accident Prediction System</h1>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/predict">Predict</a></li>
+                <li><a href="/analytics">Analytics</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="container">
+            <h1>Intelligent Prediction of Road Accident Severity</h1>
+            <p>Using Machine Learning to analyze environmental factors and predict accident outcomes</p>
+            <div class="cta-buttons">
+                <a href="/predict" class="btn btn-primary">Make Prediction</a>
+                <a href="/analytics" class="btn btn-secondary">View Analytics</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <section class="features">
+            <h2>Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="icon">🤖</div>
+                    <h3>Multiple ML Models</h3>
+                    <p>Random Forest, XGBoost, and Neural Network models for accurate predictions</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🌦️</div>
+                    <h3>Environmental Analysis</h3>
+                    <p>Comprehensive analysis of weather, road conditions, and time patterns</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📊</div>
+                    <h3>Interactive Dashboard</h3>
+                    <p>Visualizations and insights from accident data analytics</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🎯</div>
+                    <h3>Real-time Predictions</h3>
+                    <p>Instant severity predictions with probability distributions</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="about">
+            <h2>About the System</h2>
+            <div class="about-content">
+                <p>
+                    This system uses advanced machine learning techniques to predict the severity of road accidents 
+                    based on various environmental and situational factors. The predictions help in:
+                </p>
+                <ul>
+                    <li>Emergency response planning and resource allocation</li>
+                    <li>Identifying high-risk conditions for preventive measures</li>
+                    <li>Understanding patterns in accident severity</li>
+                    <li>Supporting policy decisions for road safety</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="severity-levels">
+            <h2>Severity Levels</h2>
+            <div class="severity-grid">
+                <div class="severity-card minor">
+                    <h3>Minor</h3>
+                    <p>Property damage only, no injuries</p>
+                </div>
+                <div class="severity-card moderate">
+                    <h3>Moderate</h3>
+                    <p>Minor injuries requiring medical attention</p>
+                </div>
+                <div class="severity-card severe">
+                    <h3>Severe</h3>
+                    <p>Serious injuries, hospitalization required</p>
+                </div>
+                <div class="severity-card fatal">
+                    <h3>Fatal</h3>
+                    <p>Fatal injuries resulting in death</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Road Accident Prediction System. Built with Machine Learning.</p>
+        </div>
+    </footer>
+</body>
+</html>

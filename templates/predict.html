@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Accident Severity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">🚗 Road Accident Prediction System</h1>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/predict" class="active">Predict</a></li>
+                <li><a href="/analytics">Analytics</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">Accident Severity Prediction</h1>
+        
+        <div class="prediction-container">
+            <form id="prediction-form" class="prediction-form">
+                <div class="form-section">
+                    <h3>Time Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hour">Hour (0-23):</label>
+                            <input type="number" id="hour" name="hour" min="0" max="23" value="12" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="day_of_week">Day of Week (0=Mon, 6=Sun):</label>
+                            <input type="number" id="day_of_week" name="day_of_week" min="0" max="6" value="3" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="month">Month (1-12):</label>
+                            <input type="number" id="month" name="month" min="1" max="12" value="6" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Weather Conditions</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="weather_condition">Weather:</label>
+                            <select id="weather_condition" name="weather_condition" required>
+                                {% for option in weather_options %}
+                                <option value="{{ option }}">{{ option }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="temperature">Temperature (°C):</label>
+                            <input type="number" id="temperature" name="temperature" step="0.1" value="20" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="precipitation">Precipitation (mm):</label>
+                            <input type="number" id="precipitation" name="precipitation" step="0.1" min="0" value="0" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="visibility">Visibility (meters):</label>
+                            <input type="number" id="visibility" name="visibility" min="10" max="10000" value="1000" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Road Conditions</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="road_surface">Road Surface:</label>
+                            <select id="road_surface" name="road_surface" required>
+                                {% for option in road_surface_options %}
+                                <option value="{{ option }}">{{ option }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="road_type">Road Type:</label>
+                            <select id="road_type" name="road_type" required>
+                                {% for option in road_type_options %}
+                                <option value="{{ option }}">{{ option }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="lighting_condition">Lighting:</label>
+                            <select id="lighting_condition" name="lighting_condition" required>
+                                {% for option in lighting_options %}
+                                <option value="{{ option }}">{{ option }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Vehicle Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="vehicle_type">Vehicle Type:</label>
+                            <select id="vehicle_type" name="vehicle_type" required>
+                                {% for option in vehicle_type_options %}
+                                <option value="{{ option }}">{{ option }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicle_speed">Vehicle Speed (km/h):</label>
+                            <input type="number" id="vehicle_speed" name="vehicle_speed" min="0" max="200" value="60" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="speed_limit">Speed Limit (km/h):</label>
+                            <input type="number" id="speed_limit" name="speed_limit" min="0" max="150" value="50" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="num_vehicles">Number of Vehicles:</label>
+                            <input type="number" id="num_vehicles" name="num_vehicles" min="1" max="10" value="2" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Location & Driver</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="location_type">Location Type:</label>
+                            <select id="location_type" name="location_type" required>
+                                {% for option in location_type_options %}
+                                <option value="{{ option }}">{{ option }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="traffic_density">Traffic Density (veh/hr):</label>
+                            <input type="number" id="traffic_density" name="traffic_density" min="10" max="2000" value="300" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="driver_age">Driver Age:</label>
+                            <input type="number" id="driver_age" name="driver_age" min="16" max="100" value="35" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="driver_experience">Driver Experience (years):</label>
+                            <input type="number" id="driver_experience" name="driver_experience" min="0" max="60" value="10" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="alcohol_involved">Alcohol Involved:</label>
+                            <select id="alcohol_involved" name="alcohol_involved" required>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-large">Predict Severity</button>
+            </form>
+
+            <div id="results" class="results" style="display: none;">
+                <h2>Prediction Results</h2>
+                <div id="results-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Road Accident Prediction System. Built with Machine Learning.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('prediction-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch('/api/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayResults(result.predictions);
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (error) {
+                alert('Error making prediction: ' + error);
+            }
+        });
+        
+        function displayResults(predictions) {
+            const resultsDiv = document.getElementById('results');
+            const resultsContent = document.getElementById('results-content');
+            
+            let html = '<div class="prediction-cards">';
+            
+            for (const [model, data] of Object.entries(predictions)) {
+                const severityClass = data.severity_label.toLowerCase();
+                html += `
+                    <div class="prediction-card">
+                        <h3>${model.replace('_', ' ').toUpperCase()}</h3>
+                        <div class="severity-badge ${severityClass}">
+                            ${data.severity_label}
+                        </div>
+                        <div class="probabilities">
+                            <h4>Probabilities:</h4>
+                            <ul>
+                                ${Object.entries(data.probabilities).map(([sev, prob]) => 
+                                    `<li><span class="severity-label">${sev}:</span> 
+                                     <span class="probability">${(prob * 100).toFixed(1)}%</span></li>`
+                                ).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += '</div>';
+            resultsContent.innerHTML = html;
+            resultsDiv.style.display = 'block';
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

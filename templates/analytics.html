@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">🚗 Road Accident Prediction System</h1>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/predict">Predict</a></li>
+                <li><a href="/analytics" class="active">Analytics</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">Environmental Analytics Dashboard</h1>
+        
+        {% if summary %}
+        <div class="analytics-summary">
+            <h2>Summary Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Accidents</h3>
+                    <p class="stat-value">{{ summary['Total Accidents'] }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Most Dangerous Weather</h3>
+                    <p class="stat-value">{{ summary['Most Dangerous Weather'] }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Highest Risk Hour</h3>
+                    <p class="stat-value">{{ summary['Most Dangerous Hour'] }}:00</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Alcohol Involvement</h3>
+                    <p class="stat-value">{{ summary['Alcohol Involvement Rate'] }}</p>
+                </div>
+            </div>
+
+            <div class="severity-distribution">
+                <h3>Severity Distribution</h3>
+                <div class="distribution-bars">
+                    {% for severity, count in summary['Severity Distribution'].items() %}
+                    <div class="distribution-item">
+                        <span class="severity-label">{{ severity }}:</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill {{ severity.lower() }}" 
+                                 style="width: {{ (count / summary['Total Accidents'] * 100) }}%">
+                                {{ count }} ({{ (count / summary['Total Accidents'] * 100)|round(1) }}%)
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="high-risk-conditions">
+                <h3>High-Risk Conditions</h3>
+                <div class="risk-grid">
+                    <div class="risk-category">
+                        <h4>Weather Conditions</h4>
+                        <ul>
+                            {% for condition, score in summary['High-Risk Conditions']['Weather'].items() %}
+                            <li>{{ condition }}: <strong>{{ score|round(2) }}</strong></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="risk-category">
+                        <h4>Road Surface</h4>
+                        <ul>
+                            {% for surface, score in summary['High-Risk Conditions']['Road Surface'].items() %}
+                            <li>{{ surface }}: <strong>{{ score|round(2) }}</strong></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="risk-category">
+                        <h4>Vehicle Type</h4>
+                        <ul>
+                            {% for vehicle, score in summary['High-Risk Conditions']['Vehicle Type'].items() %}
+                            <li>{{ vehicle }}: <strong>{{ score|round(2) }}</strong></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="info-box">
+            <p>No analytics data available yet. Please run the analytics module first:</p>
+            <code>python src/environmental_analytics.py</code>
+        </div>
+        {% endif %}
+
+        <div class="visualizations">
+            <h2>Visualizations</h2>
+            <p class="info-text">Run the following commands to generate visualizations and view interactive dashboards:</p>
+            <ul class="command-list">
+                <li><code>python src/environmental_analytics.py</code> - Generate all analytics</li>
+                <li>Open <code>data/analytics/interactive_dashboard.html</code> in a browser for interactive charts</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Road Accident Prediction System. Built with Machine Learning.</p>
+        </div>
+    </footer>
+</body>
+</html>
